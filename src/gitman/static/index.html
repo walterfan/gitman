@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>gitman</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main>
+      <h1>gitman</h1>
+      <p class="lede">Describe the git work. Review the plan. Confirm before it runs.</p>
+      <textarea id="prompt" rows="4" placeholder="commit the staged changes"></textarea>
+      <div class="row">
+        <button id="plan-btn" type="button">Plan</button>
+        <button id="execute-btn" type="button" disabled>Execute</button>
+        <label>
+          <input id="destructive" type="checkbox" />
+          Extra-confirm destructive commands
+        </label>
+      </div>
+      <section>
+        <h2>Plan</h2>
+        <pre id="plan">No plan yet.</pre>
+      </section>
+      <section>
+        <h2>Results</h2>
+        <pre id="results">Nothing executed.</pre>
+      </section>
+    </main>
+    <script src="/static/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+:root {
+  color-scheme: light dark;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+body {
+  margin: 0;
+  padding: 1.5rem;
+}
+main {
+  max-width: 52rem;
+  margin: 0 auto;
+}
+textarea,
+pre {
+  width: 100%;
+  box-sizing: border-box;
+  font: 0.95rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+textarea {
+  padding: 0.75rem;
+}
+.row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin: 0.75rem 0 1.25rem;
+  flex-wrap: wrap;
+}
+button {
+  padding: 0.4rem 0.9rem;
+}
+.lede {
+  color: #555;
+}
+pre {
+  background: #1111;
+  padding: 0.75rem;
+  overflow: auto;
+  min-height: 4rem;
+}
