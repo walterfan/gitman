@@ -14,9 +14,17 @@ The system SHALL provide `gitman ask <prompt>` that plans git work for a target 
 - **WHEN** the user runs `gitman ask "commit the staged changes"` in a git work tree with a planner backend configured or injected
 - **THEN** the CLI prints a plan that includes a summary and one or more git commands
 
-#### Scenario: Ask without prompt
-- **WHEN** the user runs `gitman ask` with no prompt text
-- **THEN** the CLI exits non-zero and explains that a prompt is required
+### Requirement: Ask is the default command
+The system SHALL treat a bare prompt as `ask` when the first token is not a subcommand such as `serve` or `ask`.
+
+#### Scenario: Prompt without ask
+- **WHEN** the user runs `gitman "commit the staged changes"`
+- **THEN** the CLI behaves the same as `gitman ask "commit the staged changes"`
+
+#### Scenario: Explicit subcommands still work
+- **WHEN** the user runs `gitman serve --help` or `gitman ask "show status"`
+- **THEN** the CLI invokes `serve` or `ask` respectively
+
 
 ### Requirement: Target repository is the start path
 The system SHALL use the current working directory as the default repo and SHALL accept `--repo PATH` as an override. If the start path is not inside a git work tree, the CLI SHALL fail without mutating anything.

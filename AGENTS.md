@@ -25,7 +25,7 @@ Use `uv` so local commands match `uv.lock`.
 ```bash
 uv sync                     # lockfile-aligned local env
 uv run gitman --help        # CLI entry smoke test
-uv run gitman ask "..." --dry-run  # plan without mutating git
+uv run gitman "..." --dry-run     # plan without mutating git (`ask` is default)
 uv run pytest               # PR confidence suite
 uv run ruff check .         # static checks before review
 uv run ruff format .        # keeps diffs reviewable

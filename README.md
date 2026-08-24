@@ -31,10 +31,13 @@ uv run gitman --help
 From any git working tree:
 
 ```bash
-gitman ask "commit the staged changes" --dry-run
-gitman ask "show status"
+gitman "commit the staged changes" --dry-run
+gitman "show status"
 gitman ask "commit the refactor" --repo /path/to/repo
 ```
+
+`ask` is the default command, so `gitman "show status"` is the same as
+`gitman ask "show status"`. Use `gitman serve` for the Web UI.
 
 `--dry-run` prints the plan and does not mutate git. `--yes` confirms
 non-destructive mutating commands. Destructive operations (`reset --hard`,
@@ -76,7 +79,7 @@ GITMAN_LLM_VERIFY_SSL=false
 For local smoke tests without a model:
 
 ```bash
-GITMAN_PLANNER=fake gitman ask "show status" --dry-run
+GITMAN_PLANNER=fake gitman "show status" --dry-run
 ```
 
 ## Development

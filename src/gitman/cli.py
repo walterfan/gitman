@@ -57,7 +57,28 @@ def _print_plan(plan) -> None:
         click.echo(f"  {index}. {rendered}{suffix}")
 
 
-@click.group()
+class DefaultAskGroup(click.Group):
+    """Treat a bare prompt as `ask`; keep `serve` and `ask` as explicit commands."""
+
+    _group_flags = {"--help", "-h", "--version"}
+
+    def parse_args(self, ctx: click.Context, args: list[str]) -> list[str]:
+        args = list(args)
+        if self._should_default_ask(args):
+            args.insert(0, "ask")
+        return super().parse_args(ctx, args)
+
+    def _should_default_ask(self, args: list[str]) -> bool:
+        if not args:
+            return True
+        first_token = next((item for item in args if not item.startswith("-")), None)
+        if first_token is None:
+            flags = {item.split("=", 1)[0] for item in args if item.startswith("-")}
+            return bool(flags - self._group_flags)
+        return first_token not in self.commands
+
+
+@click.group(cls=DefaultAskGroup)
 @click.version_option(__version__)
 def main() -> None:
     """Natural-language git expert (plan, then confirm)."""
@@ -65,7 +86,7 @@ def main() -> None:
 
 
 @main.command()
-@click.argument("prompt", required=False)
+@click.argument("prompt", nargs=-1, required=False)
 @click.option("--repo", "repo_option", type=click.Path(path_type=Path), default=None)
 @click.option("--dry-run", is_flag=True, help="Print the plan without executing mutating git.")
 @click.option("--yes", is_flag=True, help="Confirm non-destructive mutating commands.")
@@ -75,14 +96,15 @@ def main() -> None:
     help="Allow destructive git commands without an extra prompt.",
 )
 def ask(
-    prompt: str | None,
+    prompt: tuple[str, ...],
     repo_option: Path | None,
     dry_run: bool,
     yes: bool,
     force_destructive: bool,
 ) -> None:
     """Plan git commands from a natural-language PROMPT."""
-    if not prompt or not prompt.strip():
+    prompt_text = " ".join(prompt).strip()
+    if not prompt_text:
         raise click.UsageError("a prompt is required")
     try:
         repo = resolve_repo(_resolve_start(repo_option))
@@ -95,7 +117,7 @@ def ask(
         raise click.ClickException(str(exc)) from exc
     snapshot = collect_snapshot(repo)
     try:
-        plan = annotate_commands(planner.plan(prompt, snapshot))
+        plan = annotate_commands(planner.plan(prompt_text, snapshot))
     except PlannerError as exc:
         raise click.ClickException(str(exc)) from exc
     except UnsafeCommandError as exc:

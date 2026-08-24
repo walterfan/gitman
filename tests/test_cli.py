@@ -22,6 +22,33 @@ def test_ask_requires_prompt() -> None:
     assert "prompt is required" in result.output
 
 
+def test_bare_invocation_requires_prompt() -> None:
+    result = CliRunner().invoke(main, [])
+    assert result.exit_code != 0
+    assert "prompt is required" in result.output
+
+
+def test_default_command_is_ask(git_repo: Path, monkeypatch) -> None:
+    monkeypatch.setattr("gitman.cli.get_planner", lambda: FakePlanner())
+    result = CliRunner().invoke(main, ["show status", "--repo", str(git_repo), "--dry-run"])
+    assert result.exit_code == 0, result.output
+    assert "git status --short" in result.output
+
+
+def test_unquoted_prompt_words_join(git_repo: Path, monkeypatch) -> None:
+    monkeypatch.setattr("gitman.cli.get_planner", lambda: FakePlanner())
+    result = CliRunner().invoke(main, ["show", "status", "--repo", str(git_repo), "--dry-run"])
+    assert result.exit_code == 0, result.output
+    assert "git status --short" in result.output
+
+
+def test_serve_is_not_treated_as_prompt() -> None:
+    result = CliRunner().invoke(main, ["serve", "--help"])
+    assert result.exit_code == 0
+    assert "--host" in result.output
+    assert "--port" in result.output
+
+
 def test_ask_fails_outside_git_repo(tmp_path: Path, monkeypatch) -> None:
     monkeypatch.setattr("gitman.cli.get_planner", lambda: FakePlanner())
     monkeypatch.chdir(tmp_path)
