@@ -3,7 +3,6 @@ from __future__ import annotations
 import re
 
 FORBIDDEN_BINARIES = {
-    "rm",
     "bash",
     "sh",
     "zsh",
@@ -53,6 +52,12 @@ def validate_git_args(args: list[str]) -> None:
         raise UnsafeCommandError(f"Rejected non-git command: {first}")
     if first.endswith(".sh") or first.endswith(".exe"):
         raise UnsafeCommandError(f"Rejected non-git command: {first}")
+    if first == "rm" and "--cached" not in args[1:]:
+        raise UnsafeCommandError(
+            "Rejected `git rm` without --cached: it deletes the file from your working "
+            "tree, not just the index. Run `git rm --cached <path>` to only unstage/untrack "
+            "it, or delete the file yourself and run `gitman` again to commit the removal."
+        )
     message_indexes: set[int] = set()
     index = 0
     while index < len(args):

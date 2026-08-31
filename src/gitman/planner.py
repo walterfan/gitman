@@ -18,6 +18,9 @@ commit_message (string or null), warnings (string[]).
 Each commands[].args is a git subcommand and its arguments,
 without the git binary and without a shell.
 Never invent file paths that are not in the provided status/diff snapshot.
+To stage a deleted file, use `add -A` or `add <path>` instead of `rm`.
+`rm` is only allowed with `--cached` (unstage/untrack without touching the
+working tree); plain `rm` is always rejected because it deletes files on disk.
 If the request is ambiguous (for example "undo" when both uncommitted
 changes and a HEAD commit exist), return only read-only inspection
 commands and a warning; do not mutate.

@@ -35,6 +35,10 @@ def test_rejects_rm() -> None:
         classify(["rm", "-rf", "."])
 
 
+def test_rm_cached_is_allowed() -> None:
+    assert classify(["rm", "--cached", "secret.txt"]) == "mutating"
+
+
 def test_rejects_bash() -> None:
     with pytest.raises(UnsafeCommandError):
         classify(["bash", "-c", "git status"])
