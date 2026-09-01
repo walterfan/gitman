@@ -1,0 +1,22 @@
+bootstrap.sh
+  s_e66c4f526cfe81::t_ba68dc0b1f1064 2-4,8-9,12-14,20-29,33,42,49,51-52,56-57
+README.md
+  s_e66c4f526cfe81::t_cb635a3506a776 9-19,22-29,31-36,40,46-47
+  s_e66c4f526cfe81::t_cb3e5e2faf79de 48
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "f10df7b52834b5735592f536a0fd8a7cb99d0993",
+  "prompts": {},
+  "sessions": {
+    "s_e66c4f526cfe81": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "32d9157e-e4d6-4ee5-bec6-b3788e679c62",
+        "model": "auto-smart"
+      },
+      "human_author": "Walter Fan <walter.fan@zoom.us>"
+    }
+  }
+}
