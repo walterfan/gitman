@@ -6,18 +6,45 @@ confirmation. It is a CLI with an optional loopback Web UI.
 
 ## Install
 
-Requires Python 3.11+ and [uv](https://docs.astral.sh/uv/).
+Prerequisites: **Python 3.11+** and [uv](https://docs.astral.sh/uv/getting-started/installation/).
+
+### One-line install
+
+Download and run the bootstrap installer (fetches the latest `main` source, then runs `install.sh`):
 
 ```bash
+curl -fsSL https://raw.githubusercontent.com/walterfan/gitman/main/bootstrap.sh | bash
+```
+
+To install from another branch, set `GITMAN_BRANCH` before piping:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/walterfan/gitman/main/bootstrap.sh | GITMAN_BRANCH=develop bash
+```
+
+### Install from a local clone
+
+```bash
+git clone https://github.com/walterfan/gitman.git
+cd gitman
 ./install.sh
+```
+
+The installer builds the package, installs it into `~/.local/share/gitman/venv`,
+and links the `gitman` command into `~/.local/bin`. Verify installation with:
+
+```bash
 gitman --help
 ```
 
-Remove the installed command with:
+To remove the installed venv and command link:
 
 ```bash
 ./install.sh uninstall
 ```
+
+If you used the one-line installer and no longer have a local clone, download
+`install.sh` again or clone the repo and run `./install.sh uninstall`.
 
 For development in this repo:
 
